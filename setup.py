@@ -6,6 +6,7 @@ import subprocess
 import sys
 
 from setuptools import setup
+from security import safe_command
 
 try:
     from setuptools_rust import RustExtension
@@ -81,8 +82,7 @@ except:
     if shutil.which("rustc") is not None:
         try:
             # If for any reason `rustc --version` fails, silently ignore it
-            rustc_output = subprocess.run(
-                ["rustc", "--version"],
+            rustc_output = safe_command.run(subprocess.run, ["rustc", "--version"],
                 capture_output=True,
                 timeout=0.5,
                 encoding="utf8",
